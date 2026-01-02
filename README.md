@@ -1,11 +1,11 @@
-k8s-arsenal — automation scripts and IaC examples to build reproducible Kubernetes labs on AWS EC2.
+##k8s-arsenal — automation scripts and IaC examples to build reproducible Kubernetes labs on AWS EC2.
 
-Overview
+**Overview**
 A compact toolkit for trainers, students, and engineers who want to run multi‑node Kubernetes 
 clusters on EC2 for testing and demos.
 The repo contains bootstrap scripts, cloning utilities, Terraform examples, and Ansible playbooks to automate provisioning, configuration, and basic CI/CD rollouts.
 
-Key goals
+**Key goals
 
 Reproducible environments for labs and POCs.
 
@@ -13,10 +13,9 @@ Clear, idempotent scripts that can be re-run safely.
 
 Minimal host impact and easy cleanup.
 
-Templates and examples for extending to CI pipelines.
 
-Quickstart
-Prerequisites
+##Quickstart
+**Prerequisites
 
 AWS account (for EC2).
 
@@ -28,17 +27,18 @@ For GitHub pushes: use PAT or SSH keys (do not rely on cached credentials).
 
 EC2 quick demo
 
-bash
+```bash
 # Initialize Terraform (example folder: infra/aws)
 cd infra/aws
 terraform init
 terraform apply -var-file=secrets.tfvars
 # After instances are up, run Ansible playbook to bootstrap nodes
 ansible-playbook -i inventory/ec2.ini playbooks/bootstrap-k8s.yml
-Tip: use a dedicated IAM role with least privilege for provisioning.
+```
+**Tip: use a dedicated IAM role with least privilege for provisioning.
 
-Scripts and what they do
-Docker Runtime
+#Scripts and what they do
+**Docker Runtime
 
 Scripts to install and configure Docker or containerd on target nodes; includes recommended daemon settings for Kubernetes.
 
@@ -58,7 +58,7 @@ Comments added to scripts
 
 Each script includes a header with purpose, expected inputs, idempotency notes, and sanitization checklist (remove secrets before export). Look for # NOTE: and # TODO: markers in scripts for maintainers.
 
-Terraform Integration
+#Terraform Integration
 Example modules to provision EC2 instances, security groups, and VPCs for a small k8s cluster.
 
 Usage pattern
@@ -71,7 +71,7 @@ Recommended workflow
 
 terraform init → terraform plan -var-file=secrets.tfvars → terraform apply -var-file=secrets.tfvars.
 
-Ansible Integration
+#Ansible Integration
 Playbooks to configure nodes after provisioning: install runtime, kubeadm init/join, apply CNI, and deploy a simple app for smoke tests.
 
 Inventory examples include static and dynamic (EC2) inventory scripts.
@@ -81,7 +81,7 @@ Best practice: run Ansible from a bastion or CI runner with SSH keys stored secu
 Architecture and Design
 Topology: single control-plane (or HA control-plane) with multiple worker nodes; optional load balancer for control-plane in EC2 setups.
 
-Design notes
+*Design notes
 
 Keep bootstrap tasks idempotent.
 
@@ -89,8 +89,8 @@ Separate concerns: provisioning (Terraform) vs configuration (Ansible/scripts).
 
 Use small, focused scripts and document expected inputs/outputs.
 
-CI/CD and Deployment
-Example GitHub Actions workflows for:
+*CI/CD and Deployment
+*Example GitHub Actions workflows for:
 
 Linting shell scripts with shellcheck.
 
@@ -98,7 +98,7 @@ Running smoke tests against a freshly provisioned cluster.
 
 Packaging and releasing scripts as a tarball.
 
-Recommendation: add a ci/ folder with a minimal pipeline that runs shellcheck and a smoke test to validate cloning and bootstrap scripts.
+*Recommendation: add a ci/ folder with a minimal pipeline that runs shellcheck and a smoke test to validate cloning and bootstrap scripts.
 
 Contributing
 How to contribute
@@ -127,11 +127,9 @@ License: Add a LICENSE file (MIT recommended for tooling).
 
 Contact: For collaboration or questions, open an issue or tag maintainers in PRs.
 
-Appendix Useful commands and checks
-bash
-# Check WSL versions and running distros
-wsl -l -v
-
+*Appendix Useful commands and checks
+```bash
+---
 # Show kubelet and kubeadm versions
 kubeadm version
 kubelet --version
