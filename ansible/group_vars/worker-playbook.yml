@@ -1,0 +1,11 @@
+---
+- name: Join workers to the cluster
+  hosts: workers
+  become: yes
+  vars_prompt:
+    - name: "kubeadm_join_cmd"
+      prompt: "Paste kubeadm join command (auto-captured from master, or provide manually)"
+      private: no
+  tasks:
+    - name: Run kubeadm join on workers
+      command: "{{ kubeadm_join_cmd }}"

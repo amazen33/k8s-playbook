@@ -1,0 +1,29 @@
+---
+- name: Prepare and export join command from master
+  hosts: master
+  become: yes
+  tasks:
+    - name: Ensure kubeadm join command file exists
+      stat:
+        path: /etc/kubeadm_join_cmd.sh
+      register: join_file
+
+    - name: Recreate join command if missing
+      command: kubeadm token create --print-join-command
+      register: join_cmd
+      when: not join_file.stat.exists
+
+    - name: Write join command file if regenerated
+      copy:
+        content: "{{ join_cmd.stdout }}"
+        dest: /etc/kubeadm_join_cmd.sh
+        mode: "0755"
+      when: not join_file.stat.exists
+
+    - name: Read join command
+      command: cat /etc/kubeadm_join_cmd.sh
+      register: join_cmd_final
+
+    - name: Set fact with join command
+      set_fact:
+        kubeadm_join_cmd: "{{ join_cmd_final.stdout }}"
