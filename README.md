@@ -29,7 +29,7 @@
 				   | 📑Control plane (master)      |⚙️ Worker nodes (compute)     |
 				   | 🌐CNI (Flannel 🪁/Calico 🐆)  |⚙️ kubelet, pods,📊 workloads |
 				   +---------------------------------------------------------------+
-			
+---			
 
 		📂 Repository Structure
 				k8s-playbook/
