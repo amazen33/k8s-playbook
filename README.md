@@ -12,23 +12,23 @@
 
        🏢 Enterprise Linux (RHL) - Rocky/AlmaLinux (RHEL-compatible)
 		
-#				+------ 🪟 Windows Host ----+         +----- 🔄 CI/CD & IaC Layer -------+
+				+------ 🪟 Windows Host ----+         +----- 🔄 CI/CD & IaC Layer -------+
 				| 💠 PowerShell (clone PS)  |         |  🛠️ Jenkins pipelines (jenkins)  |
 				| 🔀 Git & repo mgmt        |         |  🏗️ Terraform & Ansible (infra)  |
-#				+-------------+-------------+         +--------------------+---------------					                                            
-**							  |                                    | Provisioning, tests
+				+-------------+-------------+         +--------------------+---------------					                                            
+							  |                                    | Provisioning, tests
 							  v                                    v
-#				+---🟢 WSL2 CLx/RHL --------+        +------ EC2 CLx/RHL--------+
+				+---🟢 WSL2 CLx/RHL --------+        +------ EC2 CLx/RHL--------+
 				|👨 systemd, default user   |        | 👨 systemd, default user |
 				|👑 → ⚙️ master/worker      |        | 👑 → ⚙️ master/worker    |
 				|🐳 containerd + kube		|        | 🐳 containerd + kube      |
-#				+-------------+-------------+        +-------------+-------------+
-**							  | kubeadm init/join                  | kubeadm init/join
+				+-------------+-------------+        +-------------+-------------+
+							  | kubeadm init/join                  | kubeadm init/join
 							  v                                    v
-#		          +--------------------- ☸️ Kubernetes cluster ------------------+
+		          +--------------------- ☸️ Kubernetes cluster ------------------+
 				   | 📑Control plane (master)      |⚙️ Worker nodes (compute)     |
 				   | 🌐CNI (Flannel 🪁/Calico 🐆)  |⚙️ kubelet, pods,📊 workloads |
-#				   +---------------------------------------------------------------+
+				   +---------------------------------------------------------------+
 			
 
 #		Components 
