@@ -3,7 +3,7 @@
 
 # 📘 README for `k8s-Arsenal/ansible`
 
-```markdown
+```markdown```
 # k8s-Arsenal Ansible Package
 
 ## Overview

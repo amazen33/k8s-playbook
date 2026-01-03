@@ -31,6 +31,29 @@
 				   +---------------------------------------------------------------+
 			
 
+		📂 Repository Structure
+				k8s-playbook/
+				├── terraform/   # Infrastructure as Code (AWS EC2 cluster)
+				│   ├── main.tf
+				│   ├── variables.tf
+				│   ├── outputs.tf
+				│   ├── cloud-init-master.sh
+				│   └── cloud-init-worker.sh
+				└── ansible/     # Configuration Management (Kubernetes setup)
+				├── inventory.ini
+				├── group_vars/
+				│   └── all.yml
+				├── master-playbook.yml
+				└── worker-playbook.yml
+				├───AWS
+				│   ├───CLx
+				│   └───RHEL
+				└───WSL2
+					├───CLx
+					└───RHEL
+---
+
+
 #		Components 
 		🐧CLx (Community Linux):
 
