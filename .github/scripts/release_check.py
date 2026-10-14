@@ -88,12 +88,22 @@ def cmd_tag(args):
     version, source = read_version()
     if version != tag_base:
         fail(f"tag {args.tag} needs {source} = {tag_base} (found {version})")
-    notes = section(changelog(), tag_base)
+    full = args.tag[1:]
+    text = changelog()
+    notes = section(text, full) or section(text, tag_base)
     if not notes:
-        fail(f"CHANGELOG.md needs a non-empty '## [{tag_base}]' section")
-    where = "main" if args.branch == "main" else "release/" + ".".join(tag_base.split(".")[:2])
-    if git("merge-base", "--is-ancestor", "HEAD", f"origin/{where}").returncode != 0:
-        fail(f"the tagged commit is not on {where}")
+        fail(f"CHANGELOG.md needs a non-empty '## [{full}]' or '## [{tag_base}]' section")
+    release_branch = "release/" + ".".join(tag_base.split(".")[:2])
+    if args.branch == "main":
+        allowed = ["main", release_branch]
+    elif args.branch == "release":
+        allowed = [release_branch]
+    else:  # product: alpha/beta from main before the first rc; rc and stable from release/X.Y
+        allowed = ["main", release_branch] if pre in ("alpha", "beta") else [release_branch]
+    on = [b for b in allowed if git("merge-base", "--is-ancestor", "HEAD", f"origin/{b}").returncode == 0]
+    if not on:
+        fail(f"the tagged commit is not on {' or '.join(allowed)}")
+    where = on[0]
     if pre is None and not git("tag", "--points-at", "HEAD", "--list", f"v{tag_base}-rc.*").stdout.split():
         fail(f"stable {args.tag} must sit on the commit of an accepted v{tag_base}-rc.N candidate")
     if args.notes:
@@ -111,7 +121,7 @@ def main():
     sub.add_parser("check").set_defaults(func=cmd_check)
     tag = sub.add_parser("tag")
     tag.add_argument("tag")
-    tag.add_argument("--branch", choices=["main", "release"], default="main")
+    tag.add_argument("--branch", choices=["main", "release", "product"], default="main")
     tag.add_argument("--notes")
     tag.add_argument("--github-output")
     tag.set_defaults(func=cmd_tag)
